@@ -1,0 +1,9 @@
+{
+  "tasks": {
+    "dev": "deno run --watch main.ts"
+  },
+  "imports": {
+    "@deno-ink/core": "jsr:@deno-ink/core@^0.2.1",
+    "@std/assert": "jsr:@std/assert@1"
+  }
+}
