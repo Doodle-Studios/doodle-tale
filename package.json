@@ -14,11 +14,6 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@inquirer/prompts": "^8.4.3",
-    "@opentui/core": "^0.2.10",
-    "@sinclair/typebox": "^0.34.49",
-    "jsext": "^1.0.7",
-    "node-file-dialog": "^1.0.3",
-    "open-windows-file-dialog": "^1.0.0"
+    "@opentui/core": "^0.2.14"
   }
 }
