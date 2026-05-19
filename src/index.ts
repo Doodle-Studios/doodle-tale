@@ -5,13 +5,19 @@ import {
   SelectRenderable,
   SelectRenderableEvents
 } from "@opentui/core";
-
 import * as data from "./save_schema/loader"
+import {readdir} from "node:fs/promises";
+import { Data, new_data } from "./save_schema/data";
 
 const renderer = await createCliRenderer({ exitOnCtrlC: true});
-import {readdir} from "node:fs/promises";
-import { file } from "bun";
-import { Data, new_data } from "./save_schema/data";
+function shutdown(err:string) {
+  renderer.destroy();
+  console.error(err);
+  process.exit(1);
+}
+
+process.on("uncaughtException", shutdown);
+process.on("unhandledRejection", shutdown);
 
 async function directory_vis(dir: string) : Promise<Dict<any> | null> {
   renderer.root.getChildren().forEach(c => c.destroy());
@@ -23,7 +29,6 @@ async function directory_vis(dir: string) : Promise<Dict<any> | null> {
     itemSpacing: 1,
     focusedBackgroundColor: "transparent",
     selectedTextColor: "lime",
-    selectedBackgroundColor: "",
     options: []
   })
 
@@ -75,7 +80,6 @@ async function directory_vis(dir: string) : Promise<Dict<any> | null> {
       if (option.name == "←—") {
         resolve(directory_vis(dir.split("/").slice(0, -1).join("/")));
         renderer.root.getChildren().forEach(c => c.destroy());
-
       } else if (option.name.endsWith(".save")) {
         const save_data = await data.load(`${dir}/${option.name}`);
         if (save_data == null) {
@@ -124,11 +128,14 @@ class Game {
         renderer.destroy();
         process.exit(0);
       } else if (option.name == "New Game") {
-        this.data = new_data;
+        this.data = new_data("Player");
       } else if (option.name == "Load Game") {
         const loaded_data = await directory_vis(import.meta.dir);
         if (loaded_data != null) {
           this.data = new Data(loaded_data);
+          if (!this.data.valid){
+            this.data = new_data("Player");
+          } 
         } else {
           renderer.destroy();
           process.exit(0);

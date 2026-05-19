@@ -1,5 +1,3 @@
-
-
 // XOR made using the assistance of AI
 export function xor(s: string, k = 0x5a) {
   return [...s]
@@ -10,6 +8,9 @@ export function xor(s: string, k = 0x5a) {
 export function save(data: any, destination: string) {
   const json = JSON.stringify({ ...data });
   var xored = xor(json);
+  if (data.filelocation == "") {
+    data.filelocation = destination;
+  }
   Bun.write(destination, xored);
 }
 
