@@ -225,7 +225,7 @@ class Game {
       Box({alignItems: "center", justifyContent: "center", width: "100%", height: "100%"},
         Box({alignItems: "center", justifyContent: "center"},
           ASCIIFont({font: "slick", text: "Doodle Tale"}),
-          Text({content: "v0.1.4", attributes: TextAttributes.DIM, alignSelf: "flex-end"})
+          Text({content: "v0.1.5", attributes: TextAttributes.DIM, alignSelf: "flex-end"})
         ),
         Box({alignItems: "center", justifyContent: "center", paddingTop: 2},
           selector
