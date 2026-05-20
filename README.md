@@ -1,15 +1,17 @@
-# core
+# doodle tale
 
-To install dependencies:
+to install dependencies
 
-```bash
+```
 bun install
 ```
 
-To run:
+to run
 
-```bash
+```
 bun dev
 ```
+version scheme
 
-This project was created using `bun create tui`. [create-tui](https://git.new/create-tui) is the easiest way to get started with OpenTUI.
+main:
+`v(big update).(patch).(commit)`
