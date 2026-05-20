@@ -28,7 +28,7 @@ jobs:
           bun build src/index.ts --compile --target=bun-windows-x64 --outfile ./builds/doodle-tale-beta-v0.1.5.exe
 
       - name: Upload Artifact
-        uses: actions/artifacts@v4
+        uses: actions/upload-artifact@v4
         with:
           name: doodle-tale-windows-build
           path: ./builds/doodle-tale-beta-v0.1.5.exe
