@@ -1,4 +1,5 @@
 import { readdir } from "node:fs/promises";
+import { BoxRenderable, CliRenderer, MarkdownRenderable, SyntaxStyle } from "@opentui/core";
 
 export type Token =
   | { type: "text"; value: string }
@@ -10,7 +11,7 @@ export type Section = { tokens: Token[]; options: Option[] };
 
 export var dialogue = new Map<string, Dict<Section>>();
 
-function tokenize(content: string): Token[] {
+export function tokenize(content: string): Token[] {
   const tokens: Token[] = [];
   let i = 0;
 
@@ -40,12 +41,13 @@ function tokenize(content: string): Token[] {
   return tokens;
 }
 
-function parse_section(body: string, next_sections: string[]): Section {
+export function parse_section(body: string, next_sections: string[]): Section {
   const lines = body.split("\n");
-  const option_start = lines.findLastIndex((l) => !l.startsWith("- ")) + 1;
+  const trimmed = lines.slice(0, lines.findLastIndex((l) => l.trim()) + 1);
+  const option_start = trimmed.findLastIndex((l) => !l.startsWith("- ")) + 1;
 
-  const text = lines.slice(0, option_start).join("\n");
-  const options: Option[] = lines
+  const text = trimmed.slice(0, option_start).join("\n");
+  const options: Option[] = trimmed
     .slice(option_start)
     .filter((l) => l.startsWith("- "))
     .map((l, i) => ({
@@ -87,4 +89,36 @@ export async function parse_dialogue() {
   }
 }
 
-export function render_dialogue(section: Section) {}
+export function render_dialogue(section: Section, renderer: CliRenderer) {
+
+  async function typewriter(content: string) {
+    for (let i = 0; i < content.length; i++) {
+      dialogue_text.content += content[i];
+      await new Promise((resolve) => setTimeout(resolve, ));
+    }
+  }
+
+  renderer.requestLive();
+  renderer.root.getChildren().forEach(c => c.destroy());
+  
+  var dialogue_box = new BoxRenderable(renderer, { 
+    width: 20,
+    height: 30,
+    border: true,
+    borderStyle: "rounded",
+    alignSelf: "baseline",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 2,
+  })
+
+  var style = SyntaxStyle.fromStyles({})
+  
+  var dialogue_text = new MarkdownRenderable(renderer, {
+    content: "",
+    syntaxStyle: style,
+  })
+  dialogue_box.add(dialogue_text)
+
+  renderer.root.add(dialogue_box)  
+}
