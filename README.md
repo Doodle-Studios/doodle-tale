@@ -11,6 +11,3 @@ to run
 ```
 bun dev
 ```
-version scheme
-
-https://github.com/LaDoodleInTheHat/doodle-tale/releases/tag/beta
