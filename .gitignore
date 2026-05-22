@@ -1,4 +1,6 @@
 .zed/
+.agents/
+skills-lock.json
 
 # dependencies (bun install)
 node_modules
