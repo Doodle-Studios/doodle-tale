@@ -34,7 +34,7 @@ class Game {
       itemSpacing: 1,
       backgroundColor: "transparent",
       focusedBackgroundColor: "transparent",
-      selectedTextColor: "lime",
+      selectedTextColor: "lime", 
       selectedBackgroundColor: "transparent",
       options: [
         { name: "New Game", description: "Start a new save" },
