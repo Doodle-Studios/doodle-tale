@@ -56,14 +56,22 @@ class Game {
             process.exit(0);
           }, 2000);
         } else if (option.name === "Load Game") {
-          const savesDir = path.join(import.meta.dir, "../saves");
-          const loaded_data = await directory_vis(renderer, savesDir);
+          const loaded_data = await directory_vis(renderer, import.meta.dir);
           if (loaded_data != null) {
             this.data = new Data(loaded_data);
             if (!this.data.valid) {
-              this.data = await new_save(renderer);
+              renderer.root.add(ASCIIFont({
+                text: "error loading file",
+                font:"block"
+              }))
+              setTimeout(() => {
+                renderer.destroy();
+                process.exit(0);
+              }, 2000);
+            } else {
+              renderer.destroy()
+              process.exit(0);
             }
-            process.exit(0);
           } else {
             renderer.destroy();
             process.exit(0);

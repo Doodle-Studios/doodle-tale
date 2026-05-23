@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeAll } from "bun:test";
-import * as engine from "./src/story_engine/engine";
+import * as engine from "../src/story_engine/engine";
 
 // --- tokenize ---
 

@@ -23,7 +23,14 @@ export const stat_types = {
 
 export class Data {
   valid: boolean = true;
+  filelocation: string = "";
   constructor(public data: Dict<any>) {
+    for (const key in types) {
+      if (!(key in data)) {
+        this.valid = false;
+      }
+    }
+
     for (const key in data) {
       const val = data[key];
 
@@ -37,45 +44,44 @@ export class Data {
             }
           }
         }
-      } 
-
-      else if (key === "stats") {
+      } else if (key === "stats") {
         for (const statName in stat_types) {
           const expected = stat_types[statName as keyof typeof stat_types];
           if (typeof val[statName] !== expected) {
             this.valid = false;
           }
         }
-      } 
-
-      else if (typeof val !== "object") {
+      } else if (typeof val !== "object") {
         const expected = types[key as keyof typeof types];
         if (typeof val !== expected) {
           this.valid = false;
         }
       }
     }
+    const isValid = this.valid;
     Object.assign(this, data);
+    this.valid = isValid;
   }
 }
 
-export const new_data = (name: string) => new Data({
-  name: name,
-  level: 1,
-  xp: 0,
-  hp: 20,
-  max_hp: 20,
-  weapons: {
-    "fists": {
-      name: "fists",
-      min_dmg: 1,
-      max_dmg: 3,
-    }
-  },
-  stats: {
-    strength: 1,
-    agility: 1,
-    defence: 1,
-  },
-  filelocation: "",
-});
+export const new_data = (name: string) =>
+  new Data({
+    name: name,
+    level: 1,
+    xp: 0,
+    hp: 20,
+    max_hp: 20,
+    weapons: {
+      fists: {
+        name: "fists",
+        min_dmg: 1,
+        max_dmg: 3,
+      },
+    },
+    stats: {
+      strength: 1,
+      agility: 1,
+      defence: 1,
+    },
+    filelocation: "",
+  });
